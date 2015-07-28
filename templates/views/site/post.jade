@@ -42,18 +42,18 @@ block content
 				!= post.content.full
 
 				//- Comment
-					.comments
-						h4.mb-1=post.comments.length == 0 ? 'Be the first to reply' : plural(post.comments.length, '* comment', '* comments')
-						for comment in post.comments
-							if comment.author
-								.comment.media
-									.pull-left
-										img(src=comment.author.photo.exists ? comment.author._.photo.thumbnail(60,60) : '/images/placeholders/user-60x60.jpg', alt=comment.author.name.full, width=40, height=40).media-object.img-circle
-									.media-body
-										h6.mt-0
-											=comment.author.name.full
-											span.text-muted  &middot; #{moment(comment.publishedOn).fromNow()}
-										!=comment.content.html
+				.comments
+					h4.mb-1=post.comments.length == 0 ? 'Be the first to reply' : plural(post.comments.length, '* comment', '* comments')
+					for comment in post.comments
+						if comment.author
+							.comment.media
+								.pull-left
+									img(src=comment.author.photo.exists ? comment.author._.photo.thumbnail(60,60) : '/images/placeholders/user-60x60.jpg', alt=comment.author.name.full, width=40, height=40).media-object.img-circle
+								.media-body
+									h6.mt-0
+										=comment.author.name.full
+										span.text-muted  &middot; #{moment(comment.publishedOn).fromNow()}
+									!=comment.content.html
 					if user
 						//- Reply form
 						form(method='post').comment-form.mt-5
