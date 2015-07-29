@@ -15,7 +15,7 @@ var UserPhoto = new keystone.List('UserPhoto', {
 
 UserPhoto.add({
   mysql_id: { type: Number, noedit: true },
-  author : { type: Types.Relationship, ref: 'User', index: true },
+  author : { type: Types.Relationship, ref: 'TttUser', index: true },
   channels: { type: Types.Relationship, ref: 'PostCategory', many: true },
   pic_url: { type: String },
   content: { type: String },

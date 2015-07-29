@@ -8,10 +8,10 @@ block content
     .item
       a.photo(href="/photos/{{_id}}")
         img(src="http://file.tttalk.org/bmiddle/{{pic_url}}" width="240" height="240")
-      a.avatar(href="/users/{{user_id}}")
-        img.img-circle(src="http://file.tttalk.org/thumbnail/{{user_pic}}" width="40" height="40")
-      | {{fullname}}
-      | {{user_id}}
+      a.avatar(href="/users/{{author._id}}")
+        img.img-circle(src="http://file.tttalk.org/thumbnail/{{author.pic_url}}" width="40" height="40")
+      | {{author.fullname}}
+      | {{author._id}}
       p {{content}}
       p {{to_content}}
     | {{/each}}
