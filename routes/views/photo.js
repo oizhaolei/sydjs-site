@@ -17,10 +17,10 @@ exports.show = function(req, res, next){
   var view = new keystone.View(req, res),
       locals = res.locals;
   logger.info(photo_id);
-  UserPhoto.model.findById(photo_id)
+  UserPhoto.model.findById(photo_id).populate('author')
     .exec(function(err, userPhoto) {
       locals.userPhoto = userPhoto;
-      locals.userPhoto.populateRelated('comments', function() {
+      locals.userPhoto.populateRelated('comments[author]', function() {
         logger.info(userPhoto);
         view.render('site/photo');
       });

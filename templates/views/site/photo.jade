@@ -3,7 +3,7 @@ extends ../../layouts/default
 //- BODY
 block content
   -function getLangIcon(lang) {lang = lang.toLowerCase(); if (lang == 'en') lang = 'us'; if (!lang) return ''; else return 'flag-icon-' + lang;}
-  -function getPicUrl(file_server, thumbnailPrefix, pic) { if (pic == null || pic.length == 0) return '../img/default_user.png'; if (pic.indexOf('http://') == 0 || pic.indexOf('https://') == 0) return pic; else return file_server + thumbnailPrefix + pic;}
+  -function getPicUrl(file_server, prefix, pic) { if (pic == null || pic.length == 0) return '../img/default_user.png'; if (pic.indexOf('http://') == 0 || pic.indexOf('https://') == 0) return pic; else return file_server + prefix + pic;}
   div.container
     if userPhoto
       div.post(data-logined='' data-uuid='' data-cmt-count='')
@@ -13,8 +13,8 @@ block content
           div.post-content-container
             div.post-user
               div.avatar
-                img(src=file_server + thumbnailPrefix + userPhoto.user_pic)
-              div.author=userPhoto.fullname
+                img(src='http://file.tttalk.org/thumbnail/' + userPhoto.author.pic_url)
+              div.author=userPhoto.author.fullname
               div.create-time=userPhoto.create_date
               div.post-original
                 if userPhoto.content
@@ -42,16 +42,16 @@ block content
               if likes
                 - each like in likes
                   div.favs-item
-                    img(src=getPicUrl(file_server, thumbnailPrefix, like.user_pic) title=like.fullname)
+                    img(src=getPicUrl('http://file.tttalk.org/', 'thumbnail/', like.user_pic) title=like.fullname)
           div.post-comment
             div.comment-list
               if userPhoto.comments
                 - each comment in userPhoto.comments
                   div.comment-item(id='' data-id='')
-                    img.item-avatar(src=getPicUrl(file_server, thumbnailPrefix, comment.user_pic))
+                    img.item-avatar(src=getPicUrl('http://file.tttalk.org/', 'thumbnail/', comment.user_pic))
                     div(class='item-original-flag flag-icon-background ' + getLangIcon(comment.lang))
                     div.item-author
-                      span=comment.fullname
+                      span=comment.author.fullname
                     div.item-datetime
                       span=comment.create_date
                     div.item-original
