@@ -1,11 +1,12 @@
+"use strict";
 var config = require('../config.json');
 var logger = require('log4js').getLogger('updates/user-photos.js');
 var _ = require('lodash');
 var fs = require('fs');
 
-var keystone = require('keystone');
-async = require('async'),
-UserPhoto = keystone.list('UserPhoto');
+var keystone = require('keystone'),
+    async = require('async'),
+    UserPhoto = keystone.list('UserPhoto');
 
 var mysql = require('mysql'),
     mainPool = mysql.createPool(config.mysql.ttt);
@@ -13,16 +14,13 @@ var mysql = require('mysql'),
 var counter = 0;
 function importUserPhotoRow(user_photo, next) {
   if (!user_photo.content || user_photo.content==='') {
-    next();
-    return;
+   user_photo.content = ' ';
   }
 
   var newUserPhoto  = {
     mysql_id : user_photo.id,
     user_id : user_photo.userid,
     pic_url : user_photo.pic_url,
-    fullname : user_photo.fullname,
-    user_pic : user_photo.user_pic,
     title : user_photo.content,
     lang : user_photo.lang,
     address : user_photo.address,
@@ -47,7 +45,7 @@ function importUserPhotoRow(user_photo, next) {
 
 exports = module.exports = function(next) {
   UserPhoto.model.findOne({$query:{},$orderby:{_id:-1}}).exec(function(err, userPhoto) {
-    var sql = 'select up.*, u.fullname, u.pic_url user_pic from tbl_user_photo up left join tbl_user u on up.userid=u.id where (content is not null or content!="") and up.id > ? order by up.id asc limit 10000';
+    var sql = 'select up.* from tbl_user_photo up where (content is not null or content!="") and up.id > ? order by up.id asc limit 10000';
     var mysql_id = 0;
     if (userPhoto) mysql_id = userPhoto.mysql_id;
     var args = [ mysql_id];

@@ -1,0 +1,27 @@
+extends ../../layouts/default
+
+//- BODY
+block content
+  h1.bigPageTitle Hot
+  script#waterfall-tpl(type="text/x-handlebars-template")
+    | {{#each this}}
+    .item
+      a.photo(href="/photos/{{_id}}")
+        img(src="http://file.tttalk.org/bmiddle/{{pic_url}}" width="240" height="240")
+      a.avatar(href="/users/{{user_id}}")
+        img.img-circle(src="http://file.tttalk.org/thumbnail/{{user_pic}}" width="40" height="40")
+      | {{fullname}}
+      | {{user_id}}
+      p {{content}}
+      p {{to_content}}
+    | {{/each}}
+
+  #container(style="width: 1000px; margin: 0 auto;")
+
+
+block js
+  //- scripts
+  script.
+    var entry_point = '/api/populars/hot';
+
+  script(src='/js/views/photo.js')

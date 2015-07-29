@@ -108,6 +108,10 @@ exports = module.exports = function(app) {
 	app.all('/api/me/meetup', routes.api.me.meetup);
 	app.all('/api/stats', routes.api.stats);
 	app.all('/api/meetup/:id', routes.api.meetup);
+
+  app.get('/photos', routes.views.photo);
+  app.get('/photos/:photo_id', routes.views.photo.show);
+  app.all('/api/populars/hot', routes.api.populars.hot);
 	
 	// API - App
 	app.all('/api/app/status', routes.api.app.status);
