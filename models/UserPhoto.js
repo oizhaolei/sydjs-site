@@ -18,9 +18,9 @@ UserPhoto.add({
   author : { type: Types.Relationship, ref: 'User', index: true },
   channels: { type: Types.Relationship, ref: 'PostCategory', many: true },
   pic_url: { type: String },
-  title: { type: String, required: true, initial: true },
+  content: { type: String },
   lang: { type: Types.Select, options: [
-    'EN','KR','CN','JP','ID','TL','VI','TH','af','sq','ar','az','eu','bn','be','bg','ca','hr','cs','da','nl','eo','et','fi','fr','gl','ka','de','el','gu','ht','iw','hi','hu','is','ga','it','kn','la','lv','lt','mk','ms','mt','no','fa','pl','pt','ro','ru','sr','sk','sl','es','sw','sv','ta','te','tr','uk','ur','cy'
+    'EN','KR','CN','JP','ID','TL','VI','TH','af','sq','ar','az','eu','bn','be','bg','ca','hr','cs','da','nl','eo','et','fi','fr','gl','ka','de','el','gu','ht','iw','hi','hu','is','ga','it','kn','la','lv','lt','mk','ms','mt','no','fa','pl','pt','ro','ru','sr','sk','sl','es','sw','sv','ta','te','tr','uk','ur','cy','th'
   ] },
   address: { type: String },
   late6 : { type: Number, noedit: true },
@@ -31,8 +31,7 @@ UserPhoto.add({
   present : { type: Number, noedit: true },
   comment : { type: Number, noedit: true },
   chosen : { type: Number, noedit: true },
-  create_date : { type: Types.Date, index: true },
-  parent: { type: Types.Relationship, ref: 'UserPhoto', index: true }
+  create_date : { type: Types.Date, index: true }
 });
 
 /**
@@ -46,7 +45,7 @@ UserPhoto.add({
  * =============
  */
 
-UserPhoto.relationship({ ref: 'UserPhoto', refPath: 'parent_id', path: 'comments' });
+UserPhoto.relationship({ ref: 'UserPhotoComment', refPath: 'user_photo', path: 'comments' });
 
 
 /**
