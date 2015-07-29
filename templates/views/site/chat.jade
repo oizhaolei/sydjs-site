@@ -8,10 +8,8 @@ html
         .chatArea
           ul.messages
         input.inputMessage(placeholder="Type here...")
-      li.login.page
-        .form
-          h3.title your nickname?
-          input.usernameInput(type="text" maxlength="14")
+    script(type='text/javascript').
+      var username = '#{user.email}';
     script(src='//cdn.bootcss.com/jquery/2.1.4/jquery.min.js')
     script(src="//cdn.bootcss.com/socket.io/1.3.6/socket.io.min.js")
     script(src='/js/chat.js')
