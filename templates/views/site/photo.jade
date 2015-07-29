@@ -13,7 +13,7 @@ block content
           div.post-content-container
             div.post-user
               div.avatar
-                img(src='http://file.tttalk.org/thumbnail/' + userPhoto.author.pic_url)
+                img(src='http://file.tttalk.org/thumbnail/' + userPhoto.author.pic_url width="40" height="40")
               div.author=userPhoto.author.fullname
               div.create-time=userPhoto.create_date
               div.post-original
@@ -25,16 +25,16 @@ block content
             if translate.to_content
               div.post-caption=translate.to_content
                 div(class='flag flag-icon-background ' + getLangIcon(translate.to_lang))
-        div.post-count-bar
-          div.count
-            img(src='../../img/comment.png')
-            span=userPhoto.comment
-          div.count
-            img(src='../../img/like.png')
-            span=userPhoto.good
-          div.count
-            img(src='../../img/gift.png')
-            span=userPhoto.present_count
+        //div.post-count-bar
+        //  div.count
+        //    img(src='../../img/comment.png')
+        //    span=userPhoto.comment
+        //  div.count
+        //    img(src='../../img/like.png')
+        //    span=userPhoto.good
+        //  div.count
+        //    img(src='../../img/gift.png')
+        //    span=userPhoto.present_count
         div.post-detail
           div.post-favs
             div.favs-next
@@ -47,8 +47,9 @@ block content
             div.comment-list
               if userPhoto.comments
                 - each comment in userPhoto.comments
+                  hr
                   div.comment-item(id='' data-id='')
-                    img.item-avatar(src=getPicUrl('http://file.tttalk.org/', 'thumbnail/', comment.user_pic))
+                    img.item-avatar(src=getPicUrl('http://file.tttalk.org/', 'thumbnail/', comment.author.pic_url) width="40" height="40")
                     div(class='item-original-flag flag-icon-background ' + getLangIcon(comment.lang))
                     div.item-author
                       span=comment.author.fullname
@@ -58,10 +59,10 @@ block content
                       span=comment.content
                     if comment.translates
                       - each translate in comment.translates
-                        if translate.to_content
+                        if translate.content
                           div.item-translated
-                            div(class='item-translated-flag flag-icon-background ' + getLangIcon(translate.to_lang))
-                            span=translate.to_content
+                            div(class='item-translated-flag flag-icon-background ' + getLangIcon(translate.lang))
+                            span=translate.content
     else
       div.post(data-logined='' data-uuid='' data-cmt-count='')
         div.thumb.boxshadow

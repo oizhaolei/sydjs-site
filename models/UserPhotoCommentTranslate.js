@@ -1,25 +1,22 @@
 var keystone = require('keystone'), Types = keystone.Field.Types;
 
 /**
- * UserPhotoComment Model ===========
+ * UserPhotoCommentTranslate Model ===========
  */
 
-var UserPhotoComment = new keystone.List('UserPhotoComment', {
-  nocreate : true
-});
+var UserPhotoCommentTranslate = new keystone.List('UserPhotoCommentTranslate',
+    {
+      nocreate : true
+    });
 
-UserPhotoComment.add({
+UserPhotoCommentTranslate.add({
   mysql_id : {
     type : Number,
     noedit : true
   },
-  author : {
-    type : Types.Relationship,
-    ref : 'TttUser',
-    index : true
-  },
   content : {
-    type : String
+    type : String,
+    noedit : true
   },
   lang : {
     type : Types.Select,
@@ -34,40 +31,23 @@ UserPhotoComment.add({
     type : Types.Date,
     index : true
   },
-  user_photo : {
+  user_photo_comment : {
     type : Types.Relationship,
-    ref : 'UserPhoto',
+    ref : 'UserPhotoCommentTranslate',
     index : true
   }
 });
-
-
-/**
- * Relationships
- * =============
- */
-
-UserPhotoComment.relationship({ ref: 'UserPhotoCommentTranslate', refPath: 'user_photo_comment', path: 'translates' });
 
 /**
  * Hooks =====
  */
 
-UserPhotoComment.schema.pre('save', function(next) {
+UserPhotoCommentTranslate.schema.pre('save', function(next) {
   if (!this.isModified('create_date')) {
     this.create_date = Date.now();
   }
-  keystone.list('UserPhoto').model.findById(this.user_photo, function(err,parentUserPhoto) {
-    if (parentUserPhoto) {
-      parentUserPhoto.refreshUserPhotoComments();
-    }
-  });
   next();
 });
 
-/**
- * Registration ============
- */
-
-UserPhotoComment.defaultColumns = 'content, create_date|20%';
-UserPhotoComment.register();
+UserPhotoCommentTranslate.defaultColumns = 'content, create_date|20%';
+UserPhotoCommentTranslate.register();

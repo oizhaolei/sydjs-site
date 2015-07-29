@@ -20,7 +20,7 @@ exports.show = function(req, res, next){
   UserPhoto.model.findById(photo_id).populate('author')
     .exec(function(err, userPhoto) {
       locals.userPhoto = userPhoto;
-      locals.userPhoto.populateRelated('comments[author]', function() {
+      locals.userPhoto.populateRelated('comments[author, translates]', function() {
         logger.info(userPhoto);
         view.render('site/photo');
       });
