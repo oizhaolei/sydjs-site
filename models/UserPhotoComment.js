@@ -15,7 +15,7 @@ UserPhotoComment.add({
   },
   author : {
     type : Types.Relationship,
-    ref : 'User',
+    ref : 'TttUser',
     index : true
   },
   content : {
