@@ -13,15 +13,12 @@ var mysql = require('mysql'),
 
 var counter = 0;
 function importUserPhotoRow(user_photo, next) {
-  if (!user_photo.content || user_photo.content==='') {
-   user_photo.content = ' ';
-  }
 
   var newUserPhoto  = {
     mysql_id : user_photo.id,
     user_id : user_photo.userid,
     pic_url : user_photo.pic_url,
-    title : user_photo.content,
+    content : user_photo.content,
     lang : user_photo.lang,
     address : user_photo.address,
     late6 : user_photo.late6,
@@ -45,7 +42,7 @@ function importUserPhotoRow(user_photo, next) {
 
 exports = module.exports = function(next) {
   UserPhoto.model.findOne({$query:{},$orderby:{_id:-1}}).exec(function(err, userPhoto) {
-    var sql = 'select up.* from tbl_user_photo up where (content is not null or content!="") and up.id > ? order by up.id asc limit 10000';
+    var sql = 'select up.* from tbl_user_photo up where up.id > ? and up.parent_id = 0 order by up.id asc limit 10000';
     var mysql_id = 0;
     if (userPhoto) mysql_id = userPhoto.mysql_id;
     var args = [ mysql_id];
