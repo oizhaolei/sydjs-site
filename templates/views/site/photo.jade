@@ -1,0 +1,73 @@
+extends ../../layouts/default
+
+//- BODY
+block content
+  -function getLangIcon(lang) {lang = lang.toLowerCase(); if (lang == 'en') lang = 'us'; if (!lang) return ''; else return 'flag-icon-' + lang;}
+  -function getPicUrl(file_server, thumbnailPrefix, pic) { if (pic == null || pic.length == 0) return '../img/default_user.png'; if (pic.indexOf('http://') == 0 || pic.indexOf('https://') == 0) return pic; else return file_server + thumbnailPrefix + pic;}
+  div.container
+    if userPhoto
+      div.post(data-logined='' data-uuid='' data-cmt-count='')
+        div.thumb.boxshadow
+          img(src='http://file.tttalk.org/original/' + userPhoto.pic_url)
+        div.post-content
+          div.post-content-container
+            div.post-user
+              div.avatar
+                img(src=file_server + thumbnailPrefix + userPhoto.user_pic)
+              div.author=userPhoto.fullname
+              div.create-time=userPhoto.create_date
+              div.post-original
+                if userPhoto.content
+                  span=userPhoto.content
+                  div(class='original-flag flag-icon-background ' + getLangIcon(userPhoto.lang))
+        if userPhoto.translates
+          - each translate in userPhoto.translates
+            if translate.to_content
+              div.post-caption=translate.to_content
+                div(class='flag flag-icon-background ' + getLangIcon(translate.to_lang))
+        div.post-count-bar
+          div.count
+            img(src='../../img/comment.png')
+            span=userPhoto.comment
+          div.count
+            img(src='../../img/like.png')
+            span=userPhoto.good
+          div.count
+            img(src='../../img/gift.png')
+            span=userPhoto.present_count
+        div.post-detail
+          div.post-favs
+            div.favs-next
+            div.favs-list
+              if likes
+                - each like in likes
+                  div.favs-item
+                    img(src=getPicUrl(file_server, thumbnailPrefix, like.user_pic) title=like.fullname)
+          div.post-comment
+            div.comment-list
+              if userPhoto.comments
+                - each comment in userPhoto.comments
+                  div.comment-item(id='' data-id='')
+                    img.item-avatar(src=getPicUrl(file_server, thumbnailPrefix, comment.user_pic))
+                    div(class='item-original-flag flag-icon-background ' + getLangIcon(comment.lang))
+                    div.item-author
+                      span=comment.fullname
+                    div.item-datetime
+                      span=comment.create_date
+                    div.item-original
+                      span=comment.content
+                    if comment.translates
+                      - each translate in comment.translates
+                        if translate.to_content
+                          div.item-translated
+                            div(class='item-translated-flag flag-icon-background ' + getLangIcon(translate.to_lang))
+                            span=translate.to_content
+    else
+      div.post(data-logined='' data-uuid='' data-cmt-count='')
+        div.thumb.boxshadow
+          img(src='../img/no_image.png')
+        div.post-content
+          div.post-content-container
+            div.post-user
+
+block js

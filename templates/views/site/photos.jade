@@ -1,8 +1,11 @@
 extends ../../layouts/default
 
+block intro
+  .page-intro: .container
+    h1.bigPageTitle Hot
+
 //- BODY
 block content
-  h1.bigPageTitle Hot
   script#waterfall-tpl(type="text/x-handlebars-template")
     | {{#each this}}
     .item
@@ -16,7 +19,8 @@ block content
       p {{to_content}}
     | {{/each}}
 
-  #container(style="width: 1000px; margin: 0 auto;")
+  .page-content: .container
+    #container(style="width: 1000px; margin: 0 auto;")
 
 
 block js
