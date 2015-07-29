@@ -49,6 +49,11 @@ UserPhotoComment.schema.pre('save', function(next) {
   if (!this.isModified('create_date')) {
     this.create_date = Date.now();
   }
+  keystone.list('UserPhoto').model.findById(this.user_photo, function(err,parentUserPhoto) {
+    if (parentUserPhoto) {
+      parentUserPhoto.refreshUserPhotoComments();
+    }
+  });
   next();
 });
 

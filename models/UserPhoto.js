@@ -56,12 +56,11 @@ UserPhoto.schema.methods.refreshUserPhotoComments = function(callback) {
 
   var userPhoto = this;
 
-  keystone.list('UserPhoto').model.count()
-    .where('parent').in([userPhoto.id])
+  keystone.list('UserPhotoComment').model.count()
+    .where('user_photo').in([userPhoto.id])
     .exec(function(err, count) {
-
       if (err) return callback(err);
-
+      console.log('refreshUserPhotoComments:' + count);
       userPhoto.comment = count;
       userPhoto.save(callback);
 
@@ -140,12 +139,7 @@ UserPhoto.schema.pre('save', function(next) {
   next();
 });
 
-UserPhoto.schema.post('save', function() {
-  keystone.list('UserPhoto').model.findById(this.parent, function(err,parentUserPhoto) {
-    if (parentUserPhoto) parentUserPhoto.refreshUserPhotoComments();
-  });
-
-});
+UserPhoto.schema.post('save', function() {});
 
 UserPhoto.schema.post('remove', function() {
   keystone.list('UserPhoto').model.findById(this.parent, function(err,parentUserPhoto) {

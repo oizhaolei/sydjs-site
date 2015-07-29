@@ -16,8 +16,8 @@ function importUserPhotoCommentRow(userPhotoComment, next) {
     $query : {'mysql_id' : userPhotoComment.parent_id},
     $orderby : {}
   }).exec(function(err, parentUserPhoto) {
-    console.log(parentUserPhoto);
     if(parentUserPhoto){
+      console.log(parentUserPhoto);
       var newUserPhotoComment = {
           mysql_id : userPhotoComment.id,
           user_id : userPhotoComment.userid,
