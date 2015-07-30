@@ -114,6 +114,7 @@ exports = module.exports = function(app) {
   app.get('/photos/:photo_id', routes.views.photo.show);
   app.all('/api/populars/hot', routes.api.populars.hot);
   app.all('/api/populars/photo/:photo_id', routes.api.populars.photo);
+  app.all('/api/populars/photo/comment/:photo_id', routes.api.populars.photoComment);
 	
 	// API - App
 	app.all('/api/app/status', routes.api.app.status);
