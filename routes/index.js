@@ -113,6 +113,7 @@ exports = module.exports = function(app) {
   app.get('/photos', routes.views.photo);
   app.get('/photos/:photo_id', routes.views.photo.show);
   app.all('/api/populars/hot', routes.api.populars.hot);
+  app.all('/api/populars/photo/:photo_id', routes.api.populars.photo);
 	
 	// API - App
 	app.all('/api/app/status', routes.api.app.status);
