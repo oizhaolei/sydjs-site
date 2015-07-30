@@ -31,3 +31,13 @@ exports.hot = function(req, res, next){
     });
   });
 };
+
+exports.photo = function(req, res, next){
+  var photo_id = req.params.photo_id;
+  var query = UserPhoto.model.findById(photo_id).populate('author');
+  query.exec(function(err, userPhoto) {
+    userPhoto.populateRelated('comments[author, translates]', function() {
+      res.json(userPhoto);
+    });
+  });
+};
