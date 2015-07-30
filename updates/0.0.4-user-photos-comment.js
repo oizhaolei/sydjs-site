@@ -38,7 +38,7 @@ function importUserPhotoCommentRow(userPhotoComment, next) {
                 console.error(err);
               } else {
                 logger.info(++counter);
-                console.log("Added userPhotoComment " + userPhotoComment.id
+                logger.info("Added userPhotoComment " + userPhotoComment.id
                     + " to the database.");
               }
               next();

@@ -1,3 +1,4 @@
+var logger = require('log4js').getLogger('updates/admin.js');
 var keystone = require('keystone'),
 	async = require('async'),
 	User = keystone.list('User');
@@ -14,7 +15,7 @@ function createAdmin(admin, done) {
 				console.error("Error adding admin " + admin.email + " to the database:");
 				console.error(err);
 			} else {
-				console.log("Added admin " + admin.email + " to the database.");
+				logger.info("Added admin " + admin.email + " to the database.");
 			}
 			done();
 		});

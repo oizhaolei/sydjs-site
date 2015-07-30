@@ -30,7 +30,7 @@ function importUserPhotoCommentTranslateRow(userPhotoCommentTranslate, next) {
             console.error(err);
           } else {
             logger.info(++counter);
-            console.log("Added UserPhotoCommentTranslate " + userPhotoCommentTranslate.id
+            logger.info("Added UserPhotoCommentTranslate " + userPhotoCommentTranslate.id
                 + " to the database.");
           }
           next();

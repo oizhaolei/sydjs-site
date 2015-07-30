@@ -40,7 +40,7 @@ function importUserPhotoRow(user_photo, next) {
           console.error(err);
         } else {
           logger.info(++counter);
-          console.log("Added user_photo " + user_photo.id + " to the database.");
+          logger.info("Added user_photo " + user_photo.id + " to the database.");
         }
         next();
       });

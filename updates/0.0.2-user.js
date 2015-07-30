@@ -32,7 +32,7 @@ function importTttUserRow(user, next) {
       console.error(err);
     } else {
       logger.info(++counter);
-      console.log("Added user " + user.id + " to the database.");
+      logger.info("Added user " + user.id + " to the database.");
     }
     next();
   });
@@ -45,7 +45,7 @@ exports = module.exports = function(next) {
     if (TttUser) mysql_id = TttUser.mysql_id;
     var args = [ mysql_id];
 
-    console.log(mysql_id);
+    logger.info(mysql_id);
     mainPool.query(sql, args, function(err, data) {
       if (err) {
         console.dir(err);
