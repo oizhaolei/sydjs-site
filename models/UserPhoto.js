@@ -16,7 +16,7 @@ var UserPhoto = new keystone.List('UserPhoto', {
 UserPhoto.add({
   mysql_id: { type: Number, noedit: true },
   author : { type: Types.Relationship, ref: 'TttUser', index: true },
-  channels: { type: Types.Relationship, ref: 'PostCategory', many: true },
+  channel: { type: Types.Relationship, ref: 'Channel', index: true },
   pic_url: { type: String },
   content: { type: String },
   lang: { type: Types.Select, options: [
@@ -138,6 +138,11 @@ UserPhoto.schema.pre('save', function(next) {
   if (!this.isModified('create_date')) {
     this.create_date = Date.now();
   }
+  keystone.list('Channel').model.findById(this.channel, function(err,channel) {
+    if (channel) {
+      channel.refreshChannelPopular();
+    }
+  });
   next();
 });
 
