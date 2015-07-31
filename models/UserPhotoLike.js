@@ -1,50 +1,46 @@
-var keystone = require('keystone'),
-	Types = keystone.Field.Types;
+var keystone = require('keystone'), Types = keystone.Field.Types;
 
 /**
- * UserPhotoLikes Model
- * ===========
+ * UserPhotoLikes Model ===========
  */
 
 var UserPhotoLike = new keystone.List('UserPhotoLike');
 
 UserPhotoLike.add({
-	userPhoto: { type: Types.Relationship, ref: 'UserPhoto', required: true, initial: true, index: true },
-	who: { type: Types.Relationship, ref: 'User', required: true, initial: true, index: true },
-	createdAt: { type: Date, noedit: true, collapse: true, default: Date.now },
-	changedAt: { type: Date, noedit: true, collapse: true }
+  user_photo : {
+    type : Types.Relationship,
+    ref : 'UserPhoto',
+    index : true
+  },
+  author : {
+    type : Types.Relationship,
+    ref : 'TttUser',
+    index : true
+  },
+  create_date : {
+    type : Types.Date,
+    index : true
+  }
 });
 
-
 /**
- * Hooks
- * =====
+ * Hooks =====
  */
 
 UserPhotoLike.schema.pre('save', function(next) {
-	if (!this.isModified('changedAt')) {
-		this.changedAt = Date.now();
-	}
-	next();
+  if (!this.isModified('create_date')) {
+    this.create_date = Date.now();
+  }
+  keystone.list('UserPhoto').model.findById(this.user_photo, function(err,parentUserPhoto) {
+    if (parentUserPhoto) {
+      parentUserPhoto.refreshUserPhotoLikes();
+    }
+  });
+  next();
 });
-
-UserPhotoLike.schema.post('save', function() {
-	keystone.list('UserPhoto').model.findById(this.userPhoto, function(err, userPhoto) {
-		if (userPhoto) userPhoto.refreshUserPhotoLikes();
-	});
-});
-UserPhotoLike.schema.post('remove', function() {
-	keystone.list('UserPhoto').model.findById(this.userPhoto, function(err, userPhoto) {
-		if (userPhoto) userPhoto.refreshUserPhotoLikes();
-	});
-});
-
 
 /**
- * Registration
- * ============
+ * Registration ============
  */
-
-UserPhotoLike.defaultColumns = 'userPhoto, who, createdAt';
-UserPhotoLike.defaultSort = '-createdAt';
+UserPhotoLike.defaultColumns = 'content, create_date|20%';
 UserPhotoLike.register();

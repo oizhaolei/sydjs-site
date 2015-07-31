@@ -2,53 +2,80 @@ extends ../../layouts/default
 
 //- BODY
 block content
-  -function getLangIcon(lang) {lang = lang.toLowerCase(); if (lang == 'en') lang = 'us'; if (!lang) return ''; else return 'flag-icon-' + lang;}
-  -function getPicUrl(file_server, prefix, pic) { if (pic == null || pic.length == 0) return '../img/default_user.png'; if (pic.indexOf('http://') == 0 || pic.indexOf('https://') == 0) return pic; else return file_server + prefix + pic;}
-  script#photo-template(type="text/x-handlebars-template")
-    div.thumb.boxshadow
-      img(src='http://file.tttalk.org/original/{{pic_url}}')
-    div.post-content
-     div.post-content-container
-       div.post-user
-         div.avatar
-           img(src='http://file.tttalk.org/thumbnail/{{author.pic_url}}' width="40" height="40")
-         div.author
-           span {{author.fullname}}
-         div.create-time
-           span {{create_date}}
-         div.post-original
-           span {{content}}
-           div(class='original-flag flag-icon-background')
-              getLangIcon({{lang}})
-           | {{#each translates}}
-           div.post-caption
-             span {{to_content}}
-             div(class='flag flag-icon-background')
-               getLangIcon({{to_lang}})
-           | {{/each}}
-   script#photo-comment-template(type="text/x-handlebars-template")
-     div.post-comment
-       div.comment-list
-       | {{#each this}}
-       div.comment-item(id='' data-id='')
-          img.item-avatar(src='http://file.tttalk.org/thumbnail/{{author.pic_url}}' width="40" height="40")
-          div.author
-           span {{author.fullname}}
-         div.create-time
-           span {{create_date}}
-         div.item-original
-           span {{content}}
-       hr
-       | {{/each}}
+  -function getLangIcon(lang) {lang = lang.toLowerCase(); if (!lang) return ''; else return lang + '.png';}
+  -function getPicUrl(file_server, prefix, pic) { if (pic == null || pic.length == 0) return '../images/avatar.png'; if (pic.indexOf('http://') == 0 || pic.indexOf('https://') == 0) return pic; else return file_server + prefix + pic;}
   div.container
-    div.post(data-logined='' data-uuid='' data-cmt-count='')
-    #user-photo
-    hr
-    #user-photo-comment
-block js
-  //- scripts
-  script.
-    var entry_point = '/api/populars/photo/#{photo_id}';
-    var comment_entry_point = '/api/populars/photo/comment/#{photo_id}';
+    if userPhoto
+      div.post(data-logined='' data-uuid='' data-cmt-count='')
+        div.thumb.boxshadow
+          img(src='http://file.tttalk.org/original/' + userPhoto.pic_url)
+        div.post-content
+          div.post-content-container
+            div.post-user
+              div.avatar
+                img(src='http://file.tttalk.org/thumbnail/' + userPhoto.author.pic_url width="40" height="40")
+              div.author=userPhoto.author.fullname
+              div.create-time=userPhoto.create_date
+              div.post-original
+                if userPhoto.content
+                  span=userPhoto.content
+                  div.original-flag
+                    img(src='../images/flag/' + getLangIcon(userPhoto.lang) width="31" height="20")
+        if userPhoto.translates
+          - each translate in userPhoto.translates
+            if translate.content
+              div.post-caption=translate.content
+              div.original-flag
+                img(src='../images/flag/' + getLangIcon(translate.lang) width="31" height="20")
+        div.post-count-bar
+          div.count
+            img(src='../images/comment.png')
+            span=userPhoto.comment
+          div.count
+            img(src='../images/like.png')
+            span=userPhoto.good
+          div.count
+            img(src='../images/present.png')
+            span=userPhoto.present_count
+        hr
+        div.post-detail
+          div.post-favs
+            div.favs-next
+              div.favs-list
+                if userPhoto.likes
+                  - each like in userPhoto.likes
+                    div.favs-item
+                      img.item-avatar(src=getPicUrl('http://file.tttalk.org/', 'thumbnail/', like.author.pic_url) width="40" height="40")
+                      div.item-author
+                        span=like.author.fullname
+        hr
+        div.post-comment
+          div.comment-list
+            if userPhoto.comments
+              - each comment in userPhoto.comments
+                div.comment-item(id='' data-id='')
+                  img.item-avatar(src=getPicUrl('http://file.tttalk.org/', 'thumbnail/', comment.author.pic_url) width="40" height="40")
+                  div.original-flag
+                    img(src='../images/flag/' + getLangIcon(comment.lang) width="31" height="20")
+                  div.item-author
+                    span=comment.author.fullname
+                  div.item-datetime
+                    span=comment.create_date
+                  div.item-original
+                    span=comment.content
+                  if comment.translates
+                    - each translate in comment.translates
+                      if translate.content
+                        div.item-translated
+                          div.original-flag
+                            img(src='../images/flag/' + getLangIcon(translate.lang) width="31" height="20")
+                          span=translate.content
+    else
+      div.post(data-logined='' data-uuid='' data-cmt-count='')
+        div.thumb.boxshadow
+          img(src='../img/no_image.png')
+        div.post-content
+          div.post-content-container
+            div.post-user
 
-  script(src='/js/views/photo.js')
+block js

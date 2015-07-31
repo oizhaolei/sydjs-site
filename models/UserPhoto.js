@@ -46,6 +46,8 @@ UserPhoto.add({
  */
 
 UserPhoto.relationship({ ref: 'UserPhotoComment', refPath: 'user_photo', path: 'comments' });
+UserPhoto.relationship({ ref: 'UserPhotoTranslate', refPath: 'user_photo', path: 'translates' });
+UserPhoto.relationship({ ref: 'UserPhotoLike', refPath: 'user_photo', path: 'likes' });
 
 
 /**

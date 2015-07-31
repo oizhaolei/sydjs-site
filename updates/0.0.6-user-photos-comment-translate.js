@@ -1,5 +1,5 @@
 var config = require('../config.json');
-var logger = require('log4js').getLogger('updates/user-photos-comment_translate.js');
+var logger = require('log4js').getLogger('updates/user-photos-comment-translate.js');
 var _ = require('lodash');
 var fs = require('fs');
 
