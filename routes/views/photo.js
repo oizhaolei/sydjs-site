@@ -17,7 +17,7 @@ exports.show = function(req, res, next) {
   UserPhoto.model.findById(photo_id).populate('author').exec(
       function(err, userPhoto) {
         locals.userPhoto = userPhoto;
-        locals.userPhoto.populateRelated('comments[author, translates]',
+        locals.userPhoto.populateRelated('comments[author translates]',
             function() {
               locals.userPhoto.populateRelated('translates', function() {
                 locals.userPhoto.populateRelated('likes[author]', function() {
